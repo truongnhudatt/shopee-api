@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import AuthService from '../../services/Auth';
-import { Ok, Created } from '../../core/Success';
+import { Ok, Created, SuccessResponse } from '../../core/Success';
 import { KeyStore } from '../../constants/Types';
 import { NotFoundError } from '../../core/Error';
 export default class AuthController {
@@ -37,6 +37,18 @@ export default class AuthController {
       metadata: await AuthService.logout(req.keyStore._id),
     });
     console.log({ ok });
+    return res.status(ok.status).json({
+      message: ok.message,
+      metadata: ok.metadata,
+    });
+  };
+
+  static handlerRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
+    console.log(`[AuthController]:: Refresh Token:`, req.body);
+    const ok = new Ok({
+      message: `User ${req.keyStore?.user} refreshed token successfully`,
+      metadata: await AuthService.handlerRefreshToken(req.body.refreshToken),
+    });
     return res.status(ok.status).json({
       message: ok.message,
       metadata: ok.metadata,

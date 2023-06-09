@@ -5,9 +5,11 @@ import crypto from 'crypto';
 import KeyTokenService from '../KeyToken';
 import { createKeyPair, createTokenPair } from '../../utils/Auth';
 import { getInfoData } from '../../utils';
-import { AuthFailureError, BadRequestError } from '../../core/Error';
+import { AuthFailureError, BadRequestError, ForbiddenError } from '../../core/Error';
 import { findByEmail } from '../Shop';
 import { Types } from 'mongoose';
+import { verifyJwt } from '../../helpers/Auth/index';
+import { JwtPayload } from 'jsonwebtoken';
 export interface AuthRequest {
   email: string;
   password: string;
@@ -134,5 +136,56 @@ export default class AuthService {
   static logout = async (keyStoreId: any) => {
     console.log(`[AuthService]:: Logout:`, keyStoreId);
     return await KeyTokenService.removeKeyById(keyStoreId);
+  };
+
+  static handlerRefreshToken = async (refreshToken: string) => {
+    const foundToken = await KeyTokenService.findByRefreshTokenUsed(refreshToken);
+    console.log({ foundToken });
+    if (foundToken) {
+      const verify = (await verifyJwt(refreshToken, foundToken.privateKey)) as JwtPayload;
+      console.log(`Verify::1 `, verify);
+      if (!verify) {
+        throw new AuthFailureError('Authentication failed 1 ');
+      } else {
+        const { userId, email, password } = verify;
+        console.log(`Handler Refreshtoken :: `, { userId, email, password });
+        await KeyTokenService.deleteKeyById(new Types.ObjectId(userId));
+        throw new ForbiddenError('Something went wrong. Please try again 2 ');
+      }
+    } else {
+      const existToken = await KeyTokenService.findByRefreshToken(refreshToken);
+      if (!existToken) {
+        throw new AuthFailureError('Authentication failed, user does not exist');
+      }
+      const verify = (await verifyJwt(refreshToken, existToken.privateKey)) as JwtPayload;
+      if (!verify) {
+        throw new AuthFailureError('Authentication failed 3');
+      } else {
+        const { userId, email, password } = verify;
+        const existUser = await findByEmail({ email });
+        if (!existUser) {
+          throw new AuthFailureError('Authentication failed, user does not exist 4 ');
+        }
+        const tokens = await createTokenPair(
+          { userId, email, password },
+          existToken.publicKey,
+          existToken.privateKey
+        );
+        await existToken.updateOne({
+          $set: {
+            refreshToken: tokens.refreshToken,
+          },
+          $addToSet: {
+            refreshTokenUsed: refreshToken,
+          },
+        });
+        const result = {
+          ...existUser,
+          accessToken: tokens.accessToken,
+          refreshToken: tokens.refreshToken,
+        };
+        return result;
+      }
+    }
   };
 }

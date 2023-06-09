@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import { Types, ObjectId } from 'mongoose';
 import KeyToken from '../../models/Key';
 export interface KeyToken {
   user: Types.ObjectId;
@@ -35,5 +35,16 @@ export default class KeyTokenService {
     const delKey = await KeyToken.deleteOne({ _id: id });
     console.log(`Deactivate :: `, delKey);
     return delKey;
+  };
+
+  static findByRefreshTokenUsed = async (refreshToken: string) => {
+    return await KeyToken.findOne({ refreshTokenUsed: refreshToken });
+  };
+
+  static deleteKeyById = async (userId: Types.ObjectId) => {
+    return await KeyToken.deleteOne({ user: userId });
+  };
+  static findByRefreshToken = async (refreshToken: string) => {
+    return await KeyToken.findOne({ refreshToken });
   };
 }

@@ -33,14 +33,16 @@ export const authentication = asyncHandler(
     console.log(`Authentication logout access Token::`, accessToken);
     if (!accessToken) throw new AuthFailureError('Invalid Request');
     try {
-      const decode = jwt.verify(accessToken, keyStore.publicKey, (err, decoded) => {
+      jwt.verify(accessToken, keyStore.publicKey, (err, decoded) => {
         if (err) {
           console.log(`Error decoding:: `, err);
           throw new AuthFailureError(`Authentication error`);
         } else {
           console.log(`Authentication user decoded::`, decoded);
-          req.keyStore = keyStore;
-          return next();
+          if ((typeof decoded === 'object' && (decoded.userId as string)) === (userId as string)) {
+            req.keyStore = keyStore;
+            return next();
+          }
         }
       });
     } catch (error) {
@@ -48,3 +50,7 @@ export const authentication = asyncHandler(
     }
   }
 );
+
+export const verifyJwt = async (token: string, keySecret: string) => {
+  return await jwt.verify(token, keySecret);
+};

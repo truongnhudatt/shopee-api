@@ -43,3 +43,12 @@ export class NotFoundError extends ErrorResponse {
     super(message, status);
   }
 }
+
+export class ForbiddenError extends ErrorResponse {
+  constructor(
+    message: string = httpStatusCode.ReasonPhrases.FORBIDDEN,
+    status: number = httpStatusCode.StatusCodes.FORBIDDEN
+  ) {
+    super(message, status);
+  }
+}

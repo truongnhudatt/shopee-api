@@ -10,5 +10,6 @@ route.post('/shop/login', asyncHandler(AuthController.login));
 route.use(authentication);
 
 route.post('/shop/logout', asyncHandler(AuthController.logout));
+route.post('/shop/refreshtoken', asyncHandler(AuthController.handlerRefreshToken));
 
 export default route;
