@@ -33,8 +33,8 @@ Hướng dẫn về cách sử dụng dự án và các chức năng chính.
 + Nếu đã được sử dụng thì sẽ tiến hành đăng xuất tài khoản và yêu cầu người dùng đăng nhập lại
 ![]([docs\](https://github.com/truongnhudatt/shopee-api/blob/main/docs/rf-for-ac.png)
 6. Tạo sản phẩm mới
-![]([docs\](https://github.com/truongnhudatt/shopee-api/blob/main/docs/pre-create-product.png)
-![]([docs\](https://github.com/truongnhudatt/shopee-api/blob/main/docs/create-product.png)
+![](https://github.com/truongnhudatt/shopee-api/blob/main/docs/pre-create-product.png)
+![](https://github.com/truongnhudatt/shopee-api/blob/main/docs/create-product.png)
 
 ## Đóng góp
 
