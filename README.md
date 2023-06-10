@@ -19,6 +19,22 @@ Hướng dẫn cài đặt và thiết lập dự án.
 ## Sử dụng
 
 Hướng dẫn về cách sử dụng dự án và các chức năng chính.
+1. Tải và cài đặt post man
+2. Đăng ký
+![](docs\register-user.png)
+3. Đăng nhập
+![](docs\login-user.png)
+4. Đăng xuất
+- Đăng xuất cần phải xác thực người dùng, phải chính xác rằng người dùng đó đăng xuất bằng cách thêm access token vào headers và _id của người dùng đó đồng thời xoá key ra khỏi kệ thống
+![](docs\logout-user.png)
+5. Dùng refesh token để yêu cầu access token mới
+- Verify refresh token, kiểm tra xem refresh token đó đã được dùng hay chưa
++ Nếu chưa sử dụng thì yêu cầu token mới
++ Nếu đã được sử dụng thì sẽ tiến hành đăng xuất tài khoản và yêu cầu người dùng đăng nhập lại
+![](docs\rf-for-ac.png)
+6. Tạo sản phẩm mới
+![](docs\pre-create-product.png)
+![](docs\create-product.png)
 
 ## Đóng góp
 
