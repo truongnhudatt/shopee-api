@@ -31,10 +31,10 @@ Hướng dẫn về cách sử dụng dự án và các chức năng chính.
 - Verify refresh token, kiểm tra xem refresh token đó đã được dùng hay chưa
 + Nếu chưa sử dụng thì yêu cầu token mới
 + Nếu đã được sử dụng thì sẽ tiến hành đăng xuất tài khoản và yêu cầu người dùng đăng nhập lại
-![]([docs\](https://github.com/truongnhudatt/shopee-api/blob/main/docs/)rf-for-ac.png)
+![]([docs\](https://github.com/truongnhudatt/shopee-api/blob/main/docs/rf-for-ac.png)
 6. Tạo sản phẩm mới
-![]([docs\](https://github.com/truongnhudatt/shopee-api/blob/main/docs/)pre-create-product.png)
-![]([docs\](https://github.com/truongnhudatt/shopee-api/blob/main/docs/)create-product.png)
+![]([docs\](https://github.com/truongnhudatt/shopee-api/blob/main/docs/pre-create-product.png)
+![]([docs\](https://github.com/truongnhudatt/shopee-api/blob/main/docs/create-product.png)
 
 ## Đóng góp
 
