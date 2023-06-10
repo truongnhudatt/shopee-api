@@ -10,6 +10,7 @@ import { findByEmail } from '../Shop';
 import { Types } from 'mongoose';
 import { verifyJwt } from '../../helpers/Auth/index';
 import { JwtPayload } from 'jsonwebtoken';
+import KeyToken from '../../models/Key';
 export interface AuthRequest {
   email: string;
   password: string;
@@ -187,5 +188,54 @@ export default class AuthService {
         return result;
       }
     }
+  };
+  static handlerRefreshTokenv2 = async ({
+    refreshToken,
+    user,
+    keyStore,
+  }: {
+    refreshToken: string;
+    user: any;
+    keyStore: any;
+  }) => {
+    console.log(`[HandlerRefreshTokenV2] starting refresh token`);
+    const { userId, email, password } = user;
+    console.log(`[HandlerRefreshTokenV2] user :: `, user);
+    console.log(`[HandlerRefreshTokenV2] keyStore :: `, keyStore);
+    console.log(typeof keyStore);
+    if (keyStore.refreshTokenUsed.includes(refreshToken)) {
+      await KeyTokenService.deleteKeyById(new Types.ObjectId(userId));
+      throw new ForbiddenError('Something went wrong. Please try again 2 ');
+    }
+
+    if (keyStore.refreshToken !== refreshToken)
+      throw new AuthFailureError('Authentication failed, user does not exist');
+
+    const existUser = await findByEmail({ email });
+    if (!existUser) {
+      throw new AuthFailureError('Authentication failed, user does not exist 4 ');
+    }
+    const tokens = await createTokenPair(
+      { userId, email, password },
+      keyStore.publicKey,
+      keyStore.privateKey
+    );
+    console.log({ tokens });
+    await KeyToken.updateOne(
+      { _id: keyStore._id },
+      {
+        $set: {
+          refreshToken: tokens.refreshToken,
+        },
+        $addToSet: {
+          refreshTokenUsed: refreshToken,
+        },
+      }
+    );
+    const result = {
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+    };
+    return result;
   };
 }

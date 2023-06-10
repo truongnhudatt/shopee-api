@@ -44,10 +44,17 @@ export default class AuthController {
   };
 
   static handlerRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
-    console.log(`[AuthController]:: Refresh Token:`, req.body);
+    // const ok = new Ok({
+    //   message: `User ${req.keyStore?.user} refreshed token successfully`,
+    //   metadata: await AuthService.handlerRefreshToken(req.body.refreshToken),
+    // });
     const ok = new Ok({
       message: `User ${req.keyStore?.user} refreshed token successfully`,
-      metadata: await AuthService.handlerRefreshToken(req.body.refreshToken),
+      metadata: await AuthService.handlerRefreshTokenv2({
+        refreshToken: req.refreshtoken,
+        user: req.user,
+        keyStore: req.keyStore,
+      }),
     });
     return res.status(ok.status).json({
       message: ok.message,

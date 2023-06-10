@@ -1,6 +1,15 @@
-# Shopee-Fake Api
+# Ecommerce Api
 
-Mô tả ngắn về dự án
+# Mô tả ngắn về dự án
+API cho hệ thống thương mại điện tử cơ bản
+## Chức năng chính
+1. Đăng ký
+2. Đăng nhập
+3. Đăng xuất và xác thực người dùng
+4. Tạo Access Token và Refresh Token
+5. Xử lý tài khoản đã bị lộ Refresh Token
+6. Tạo sản phẩm, áp dùng Factory Pattern
+...
 
 ## Cài đặt
 Hướng dẫn cài đặt và thiết lập dự án.

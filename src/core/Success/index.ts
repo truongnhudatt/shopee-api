@@ -1,11 +1,23 @@
 import { httpStatusCode } from '../../utils/httpStatusCode';
 import { Response } from 'express';
+
+interface ISuccessResponse {
+  message: string;
+  status: number;
+  reasons: string;
+  metadata?: any;
+}
 export class SuccessResponse {
   public message: string;
   public status: number;
   public reasons: string;
   public metadata?: any;
-  constructor(message: string, status: number, reasons: string, metadata: any = {}) {
+  constructor(
+    message: string,
+    status: number = httpStatusCode.StatusCodes.OK,
+    reasons: string = httpStatusCode.ReasonPhrases.OK,
+    metadata: any = {}
+  ) {
     this.message = message;
     this.status = status;
     this.reasons = reasons;

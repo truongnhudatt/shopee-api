@@ -7,13 +7,13 @@ export const createTokenPair = async (payload: any, publicKey: string, privateKe
   const refreshToken = await jwt.sign(payload, privateKey, {
     expiresIn: '7 days',
   });
-  jwt.verify(accessToken, publicKey, (err, decoded) => {
-    if (err) {
-      console.log(`Error signing:: `, err);
-    } else {
-      console.log(`Successfully signed:: `, decoded);
-    }
-  });
+  // jwt.verify(accessToken, publicKey, (err, decoded) => {
+  //   if (err) {
+  //     console.log(`Error signing:: `, err);
+  //   } else {
+  //     console.log(`Successfully signed:: `, decoded);
+  //   }
+  // });
   return { accessToken, refreshToken };
 };
 

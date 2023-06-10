@@ -32,3 +32,37 @@ export interface KeyStore {
   refreshToken: string;
   refreshTokenUsed: string[];
 }
+
+export enum ProductType {
+  ELECTRONIC = 'Electronic',
+  CLOTHING = 'Clothing',
+  FURNITURE = 'Furniture',
+}
+
+export interface IProduct {
+  product_name: string;
+  product_thub: string;
+  product_description: string;
+  product_price: number;
+  product_quantity: number;
+  product_type: ProductType;
+  product_shop: Types.ObjectId;
+  product_attributes?: any;
+}
+
+export interface IClothing extends IProduct {
+  brand: string;
+  size: string;
+  material: string;
+}
+export interface IElectronic extends IProduct {
+  manufacturer: string;
+  model: string;
+  color: string;
+}
+
+export interface IFurniture extends IProduct {
+  brand: string;
+  size: string;
+  material: string;
+}
